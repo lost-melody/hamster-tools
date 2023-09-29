@@ -13,6 +13,28 @@
         keys.push(new KeyModel());
         keys = keys;
     };
+    let destroyKey = (id: number) => {
+        let index = keys.findIndex((value) => {
+            return value.id === id;
+        });
+        keys = keys.slice(0, index).concat(keys.slice(index + 1));
+    };
+    let moveKeyLeft = (id: number) => {
+        let index = keys.findIndex((value) => {
+            return value.id === id;
+        });
+        if (index > 0) {
+            [keys[index-1], keys[index]] = [keys[index], keys[index-1]];
+        }
+    };
+    let moveKeyRight = (id: number) => {
+        let index = keys.findIndex((value) => {
+            return value.id === id;
+        });
+        if (index < keys.length) {
+            [keys[index+1], keys[index]] = [keys[index], keys[index+1]];
+        }
+    };
 </script>
 
 <Paper>
@@ -28,6 +50,9 @@
     <Flex gap="sm">
         {#each keys as key (key.id)}
             <Key
+                destroyThis={() => destroyKey(key.id)}
+                moveLeft={() => moveKeyLeft(key.id)}
+                moveRight={() => moveKeyRight(key.id)}
                 bind:action={key.action}
                 bind:widthType={key.widthType}
                 bind:width={key.width}

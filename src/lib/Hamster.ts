@@ -157,7 +157,7 @@ export class Action {
                 return this.type + "(" + this.kbd + ")";
             }
         } else if (this.type === ActionType.shortCommand) {
-            return this.type + "(" + this.cmd + ")";
+            return this.type + "(#" + this.cmd + ")";
         } else {
             return this.type;
         }
@@ -236,7 +236,12 @@ export class RowModel {
                 i++;
             }
         }
+        let rowHeight: string[] = [];
+        if (this.rowHeight !== 0) {
+            rowHeight.push("rowHeight: " + this.rowHeight);
+        }
         return [
+            ...rowHeight,
             "keys:",
             ...keys,
         ];
@@ -276,8 +281,18 @@ export class KeyboardModel {
                 i++;
             }
         }
+        let rowHeight: string[] = [];
+        if (this.rowHeight !== 0) {
+            rowHeight.push("rowHeight: " + this.rowHeight);
+        }
+        let insets: string[] = [];
+        if (this.buttonInsets !== "") {
+            insets.push("buttonInsets: " + this.buttonInsets);
+        }
         return [
             "name: " + name,
+            ...rowHeight,
+            ...insets,
             "rows:",
             ...rows,
         ];

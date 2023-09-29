@@ -24,6 +24,9 @@
     export let width: number;
     export let label: string;
     export let swipe: SwipeModel[];
+    export let destroyThis: () => void;
+    export let moveLeft: () => void;
+    export let moveRight: () => void;
 
     let display: string;
     $: if (label !== "") {
@@ -91,6 +94,11 @@
         </Flex>
         <Flex gap="sm">
             <TextInput bind:value={label} label="標簽" placeholder={display} />
+        </Flex>
+        <Flex gap="sm">
+            <Button on:click={destroyThis} color="red">删除鍵</Button>
+            <Button on:click={moveLeft}>左移</Button>
+            <Button on:click={moveRight}>右移</Button>
         </Flex>
     </Stack>
 </Modal>
