@@ -10,23 +10,33 @@
     } from "@svelteuidev/core";
 
     import {
-        ActionType,
-        ActionTypes,
-        KeyboardType,
-        KeyboardTypes,
-        ShortCmds,
+        Action,
+        SwipeModel,
+        KeyWidth,
+        WidthType,
         WidthTypes,
     } from "./Hamster";
-    import { Action, SwipeModel } from "./Hamster";
+    import ActionEdit from "./ActionEdit.svelte";
+    import SwipeEdit from "./SwipeEdit.svelte";
 
     export let action: Action;
-    export let widthType: string;
-    export let width: number;
+    export let width: KeyWidth;
     export let label: string;
-    export let swipe: SwipeModel[];
+    export let swipes: SwipeModel[];
     export let destroyThis: () => void;
     export let moveLeft: () => void;
     export let moveRight: () => void;
+
+    let add = () => {
+        swipes.push(new SwipeModel());
+        swipes = swipes;
+    };
+    let destroySwipe = (id: number) => {
+        let index = swipes.findIndex((value) => {
+            return value.id === id;
+        });
+        swipes = swipes.slice(0, index).concat(swipes.slice(index + 1));
+    };
 
     let display: string;
     $: if (label !== "") {
@@ -47,56 +57,40 @@
     opened={editing}
 >
     <Stack>
-        <Flex gap="sm">
-            <NativeSelect
-                data={ActionTypes}
-                bind:value={action.type}
-                label="動作類型"
-            />
-            <TextInput
-                disabled={action.type !== ActionType.character &&
-                    action.type !== ActionType.characterMargin &&
-                    action.type !== ActionType.symbol &&
-                    (action.type !== ActionType.keyboardType ||
-                        action.kbd !== KeyboardType.custom)}
-                bind:value={action.text}
-                label="鍵值"
-                placeholder="c"
-            />
-            <NativeSelect
-                disabled={action.type !== ActionType.keyboardType}
-                data={KeyboardTypes}
-                bind:value={action.kbd}
-                label="鍵盤類型"
-            />
-            <NativeSelect
-                disabled={action.type !== ActionType.shortCommand}
-                data={ShortCmds}
-                bind:value={action.cmd}
-                label="快捷指令"
-            />
-        </Flex>
+        <ActionEdit bind:action />
         <Flex gap="sm">
             <NativeSelect
                 data={WidthTypes}
-                bind:value={widthType}
+                bind:value={width.type}
                 label="鍵寛類型"
             />
             <NumberInput
-                bind:value={width}
+                disabled={width.type === WidthType.input ||
+                    width.type === WidthType.available}
+                bind:value={width.width}
                 required
                 label="寛度值"
                 placeholder="1"
                 precision={2}
                 min={0.01}
+                max={100}
                 step={0.05}
             />
         </Flex>
         <Flex gap="sm">
             <TextInput bind:value={label} label="標簽" placeholder={display} />
         </Flex>
+        <Stack>
+            {#each swipes as swipe (swipe.id)}
+                <SwipeEdit
+                    bind:swipe
+                    destroyThis={() => destroySwipe(swipe.id)}
+                />
+            {/each}
+            <Button color="green" on:click={add}>+</Button>
+        </Stack>
         <Flex gap="sm">
-            <Button on:click={destroyThis} color="red">删除鍵</Button>
+            <Button on:click={destroyThis} color="red">删除按鍵</Button>
             <Button on:click={moveLeft}>左移</Button>
             <Button on:click={moveRight}>右移</Button>
         </Flex>

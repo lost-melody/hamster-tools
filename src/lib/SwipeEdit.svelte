@@ -1,0 +1,44 @@
+<script lang="ts">
+    import {
+        Button,
+        Flex,
+        NativeSelect,
+        Paper,
+        Stack,
+        Switch,
+        TextInput,
+    } from "@svelteuidev/core";
+    import { Action, Directions, SwipeModel } from "./Hamster";
+    import ActionEdit from "./ActionEdit.svelte";
+
+    export let swipe: SwipeModel;
+    let display: string;
+    $: if (swipe.label !== "") {
+        display = swipe.label;
+    } else {
+        display = swipe.action.display();
+    }
+
+    export let destroyThis: () => void;
+</script>
+
+<Paper>
+    <Stack>
+        <Flex gap="sm">
+            <Button on:click={destroyThis} color="red">删除劃動</Button>
+            <NativeSelect
+                data={Directions}
+                bind:value={swipe.direction}
+                label="劃動方向"
+            />
+            <TextInput
+                bind:value={swipe.label}
+                label="標簽"
+                placeholder={display}
+            />
+            <Switch bind:checked={swipe.display} label="顯示劃動" />
+            <Switch bind:checked={swipe.processByRIME} label="經由Rime處理" />
+        </Flex>
+        <ActionEdit bind:action={swipe.action} />
+    </Stack>
+</Paper>

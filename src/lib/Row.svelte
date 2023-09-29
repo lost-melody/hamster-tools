@@ -24,7 +24,7 @@
             return value.id === id;
         });
         if (index > 0) {
-            [keys[index-1], keys[index]] = [keys[index], keys[index-1]];
+            [keys[index - 1], keys[index]] = [keys[index], keys[index - 1]];
         }
     };
     let moveKeyRight = (id: number) => {
@@ -32,7 +32,7 @@
             return value.id === id;
         });
         if (index < keys.length) {
-            [keys[index+1], keys[index]] = [keys[index], keys[index+1]];
+            [keys[index + 1], keys[index]] = [keys[index], keys[index + 1]];
         }
     };
 </script>
@@ -54,10 +54,9 @@
                 moveLeft={() => moveKeyLeft(key.id)}
                 moveRight={() => moveKeyRight(key.id)}
                 bind:action={key.action}
-                bind:widthType={key.widthType}
                 bind:width={key.width}
                 bind:label={key.label}
-                bind:swipe={key.swipe}
+                bind:swipes={key.swipe}
             />
         {/each}
         <Button color="green" on:click={add}>+</Button>

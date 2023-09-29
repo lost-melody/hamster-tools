@@ -42,9 +42,9 @@
             let i = 0;
             for (var line of keyboard.render()) {
                 if (i == 0) {
-                    line = "- " + line;
+                    line = "  - " + line;
                 } else {
-                    line = "  " + line;
+                    line = "    " + line;
                 }
                 yaml.push(line);
                 i++;

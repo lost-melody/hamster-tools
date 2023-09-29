@@ -139,11 +139,11 @@ export class Action {
             case ActionType.shortCommand:
                 return this.cmd;
             case ActionType.none:
-                return "";
+                return this.type;
             case ActionType.nextKeyboard:
                 return "⌘";
             default:
-                return "";
+                return ActionType.none;
         }
     }
 
@@ -164,6 +164,30 @@ export class Action {
     }
 };
 
+export class KeyWidth {
+    type: WidthType;
+    width: number;
+
+    constructor() {
+        this.type = WidthType.input;
+        this.width = 1;
+    }
+
+    render(): string {
+        switch (this.type) {
+            case WidthType.input:
+            case WidthType.available:
+                return this.type;
+            case WidthType.inputPercentage:
+            case WidthType.percentage:
+            case WidthType.points:
+                return this.type + "(" + this.width + ")";
+            default:
+                return WidthType.input
+        }
+    }
+};
+
 export class SwipeModel {
     id: number;
     direction: string;
@@ -180,21 +204,31 @@ export class SwipeModel {
         this.display = false;
         this.processByRIME = true;
     }
+
+    render(): string[] {
+        let label = this.label;
+        if (label === "") label = "\"\"";
+        return [
+            "direction: " + this.direction,
+            "action: " + this.action.render(),
+            "label: " + label,
+            "display: " + this.display,
+            "processByRIME: " + this.processByRIME,
+        ];
+    }
 };
 
 export class KeyModel {
     id: number;
     action: Action;
-    widthType: string;
-    width: number;
+    width: KeyWidth;
     label: string;
     swipe: SwipeModel[];
 
     constructor() {
         this.id = Date.now();
         this.action = new Action();
-        this.widthType = WidthType.input;
-        this.width = 1;
+        this.width = new KeyWidth();
         this.label = "";
         this.swipe = [];
     }
@@ -202,11 +236,25 @@ export class KeyModel {
     render(): string[] {
         let label = this.label;
         if (label === "") label = "\"\"";
+        let swipes: string[] = [];
+        for (var swipe of this.swipe) {
+            let i = 0;
+            for (var line of swipe.render()) {
+                if (i == 0) {
+                    line = "  - " + line;
+                } else {
+                    line = "    " + line;
+                }
+                swipes.push(line);
+                i++;
+            }
+        }
         return [
             "action: " + this.action.render(),
-            "width: " + "input",
+            "width: " + this.width.render(),
             "label: " + label,
-            "swipe: " + "[]",
+            "swipe:",
+            ...swipes,
         ];
     }
 };
@@ -228,9 +276,9 @@ export class RowModel {
             let i = 0;
             for (var line of key.render()) {
                 if (i == 0) {
-                    line = "- " + line;
+                    line = "  - " + line;
                 } else {
-                    line = "  " + line;
+                    line = "    " + line;
                 }
                 keys.push(line);
                 i++;
@@ -273,9 +321,9 @@ export class KeyboardModel {
             let i = 0;
             for (var line of row.render()) {
                 if (i == 0) {
-                    line = "- " + line;
+                    line = "  - " + line;
                 } else {
-                    line = "  " + line;
+                    line = "    " + line;
                 }
                 rows.push(line);
                 i++;
