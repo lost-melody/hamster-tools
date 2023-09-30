@@ -23,6 +23,7 @@
     export let width: KeyWidth;
     export let label: string;
     export let swipes: SwipeModel[];
+    export let rowHeight: number;
     export let destroyThis: () => void;
     export let moveLeft: () => void;
     export let moveRight: () => void;
@@ -46,9 +47,16 @@
     }
 
     let editing = false;
+
+    $: buttonStyle = {
+        height: (rowHeight === 0 ? 32 : rowHeight) + "px",
+        width: width.pixels() + "px",
+    };
 </script>
 
-<Button on:click={() => (editing = true)}>{display}</Button>
+<Button override={buttonStyle} on:click={() => (editing = true)}
+    >{display}</Button
+>
 <Modal
     size="xl"
     title="按鍵配置"

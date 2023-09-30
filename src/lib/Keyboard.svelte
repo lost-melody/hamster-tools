@@ -33,7 +33,9 @@
                 label="鍵盤名"
                 placeholder="天行鍵"
             />
+            <!--
             <TextInput bind:value={rowHeight} label="行高" placeholder="0" />
+            -->
             <TextInput
                 bind:value={buttonInsets}
                 label="内距"

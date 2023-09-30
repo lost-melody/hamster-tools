@@ -173,6 +173,22 @@ export class KeyWidth {
         this.width = 1;
     }
 
+    pixels(): number {
+        let base: number = 32;
+        switch (this.type) {
+            case WidthType.input:
+                return base;
+            case WidthType.inputPercentage:
+                return this.width * base;
+            case WidthType.percentage:
+                return this.width * 10 * base;
+            case WidthType.points:
+                return this.width;
+            case WidthType.available:
+                return 2 * base;
+        }
+    }
+
     render(): string {
         switch (this.type) {
             case WidthType.input:

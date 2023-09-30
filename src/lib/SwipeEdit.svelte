@@ -26,6 +26,10 @@
     <Stack>
         <Flex gap="sm">
             <Button on:click={destroyThis} color="red">删除劃動</Button>
+            <Switch bind:checked={swipe.display} label="顯示劃動" />
+            <Switch bind:checked={swipe.processByRIME} label="經由Rime處理" />
+        </Flex>
+        <Flex gap="sm">
             <NativeSelect
                 data={Directions}
                 bind:value={swipe.direction}
@@ -36,8 +40,6 @@
                 label="標簽"
                 placeholder={display}
             />
-            <Switch bind:checked={swipe.display} label="顯示劃動" />
-            <Switch bind:checked={swipe.processByRIME} label="經由Rime處理" />
         </Flex>
         <ActionEdit bind:action={swipe.action} />
     </Stack>

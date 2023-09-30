@@ -35,19 +35,25 @@
             [keys[index + 1], keys[index]] = [keys[index], keys[index + 1]];
         }
     };
+
+    $: rowStyle = {
+        height: (rowHeight === 0 ? 32 : rowHeight) + "px",
+    };
+    $: inputStyle = {
+        width: "64px",
+    };
 </script>
 
 <Paper>
-    <Flex gap="sm">
-        <Button on:click={destroyThis} color="red">删除行</Button>
+    <Flex gap="sm" override={rowStyle}>
+        <Button override={rowStyle} on:click={destroyThis} color="red">X</Button
+        >
         <NumberInput
+            override={inputStyle}
             bind:value={rowHeight}
-            label="行高"
-            placeholder="1"
+            placeholder="行高"
             min={0}
         />
-    </Flex>
-    <Flex gap="sm">
         {#each keys as key (key.id)}
             <Key
                 destroyThis={() => destroyKey(key.id)}
@@ -57,8 +63,9 @@
                 bind:width={key.width}
                 bind:label={key.label}
                 bind:swipes={key.swipe}
+                {rowHeight}
             />
         {/each}
-        <Button color="green" on:click={add}>+</Button>
+        <Button override={rowStyle} color="green" on:click={add}>+</Button>
     </Flex>
 </Paper>
