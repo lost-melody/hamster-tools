@@ -1,3 +1,4 @@
+import './app.css'
 import App from './App.svelte'
 
 let element = document.getElementById('app');

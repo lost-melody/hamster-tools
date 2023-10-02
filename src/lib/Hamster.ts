@@ -301,7 +301,7 @@ export class RowModel {
             }
         }
         let rowHeight: string[] = [];
-        if (this.rowHeight !== 0) {
+        if (this.rowHeight > 0) {
             rowHeight.push("rowHeight: " + this.rowHeight);
         }
         return [
@@ -319,9 +319,9 @@ export class KeyboardModel {
     rowHeight: number;
     buttonInsets: string;
 
-    constructor(name: string) {
+    constructor() {
         this.id = Date.now();
-        this.name = name;
+        this.name = "";
         this.rows = []
         this.rowHeight = 0;
         this.buttonInsets = "";

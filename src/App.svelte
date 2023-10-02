@@ -20,7 +20,7 @@
 
     let keyboards: KeyboardModel[] = [];
     let add = () => {
-        keyboards.push(new KeyboardModel("鍵盤"));
+        keyboards.push(new KeyboardModel());
         keyboards = keyboards;
     };
     let destroyKdb = (id: number) => {
@@ -101,10 +101,16 @@
         size="75%"
     >
         <Textarea
+            style="font-family:monospace;font-size:16px"
             bind:value={json_text}
             on:change={parse}
             label="配置JSON數據"
         />
-        <Textarea bind:value={yaml_text} label="配置YAML數據" />
+        <Textarea
+            style="font-family:monospace;font-size:16px"
+            rows={16}
+            value={yaml_text}
+            label="配置YAML數據"
+        />
     </Modal>
 </SvelteUIProvider>

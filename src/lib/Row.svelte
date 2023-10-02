@@ -36,20 +36,22 @@
         }
     };
 
-    $: rowStyle = {
-        height: (rowHeight === 0 ? 32 : rowHeight) + "px",
-    };
-    $: inputStyle = {
-        width: "64px",
-    };
+    $: _rowHeight = (rowHeight > 0 ? rowHeight : 32) + "px";
 </script>
 
 <Paper>
-    <Flex gap="sm" override={rowStyle}>
-        <Button override={rowStyle} on:click={destroyThis} color="red">X</Button
+    <Flex gap="sm" override={{ height: _rowHeight }}>
+        <Button
+            override={{ height: _rowHeight, width: "32px" }}
+            on:click={destroyThis}
+            color="red">X</Button
         >
         <NumberInput
-            override={inputStyle}
+            hideControls
+            override={{
+                height: _rowHeight,
+                width: "48px",
+            }}
             bind:value={rowHeight}
             placeholder="行高"
             min={0}
@@ -66,6 +68,10 @@
                 {rowHeight}
             />
         {/each}
-        <Button override={rowStyle} color="green" on:click={add}>+</Button>
+        <Button
+            override={{ height: _rowHeight, width: "32px" }}
+            color="green"
+            on:click={add}>+</Button
+        >
     </Flex>
 </Paper>

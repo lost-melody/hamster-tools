@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Button, Flex, Paper, Stack, TextInput } from "@svelteuidev/core";
+    import { Button, Flex, Paper, Stack, Text, TextInput } from "@svelteuidev/core";
 
     import { RowModel } from "./Hamster";
 
@@ -27,18 +27,18 @@
     <Stack gap="sm">
         <Flex gap="sm" align="center">
             <Button on:click={destroyThis} color="red">删除鍵盤</Button>
+            <Text>鍵盤名:</Text>
             <TextInput
                 required
                 bind:value={name}
-                label="鍵盤名"
                 placeholder="天行鍵"
             />
             <!--
             <TextInput bind:value={rowHeight} label="行高" placeholder="0" />
             -->
+            <Text>内距:</Text>
             <TextInput
                 bind:value={buttonInsets}
-                label="内距"
                 placeholder="3 或 left(3),right(3),top(3),bottom(3)"
             />
         </Flex>
