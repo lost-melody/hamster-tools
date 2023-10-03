@@ -222,12 +222,10 @@ export class SwipeModel {
     }
 
     render(): string[] {
-        let label = this.label;
-        if (label === "") label = "\"\"";
         return [
             "direction: " + this.direction,
-            "action: " + this.action.render(),
-            "label: " + label,
+            "action: " + JSON.stringify(this.action.render()),
+            "label: " + JSON.stringify(this.label),
             "display: " + this.display,
             "processByRIME: " + this.processByRIME,
         ];
@@ -250,8 +248,6 @@ export class KeyModel {
     }
 
     render(): string[] {
-        let label = this.label;
-        if (label === "") label = "\"\"";
         let swipes: string[] = [];
         for (var swipe of this.swipe) {
             let i = 0;
@@ -266,9 +262,9 @@ export class KeyModel {
             }
         }
         return [
-            "action: " + this.action.render(),
-            "width: " + this.width.render(),
-            "label: " + label,
+            "action: " + JSON.stringify(this.action.render()),
+            "width: " + JSON.stringify(this.width.render()),
+            "label: " + JSON.stringify(this.label),
             "swipe:",
             ...swipes,
         ];
@@ -328,10 +324,6 @@ export class KeyboardModel {
     }
 
     render(): string[] {
-        let name = this.name;
-        if (name === "") {
-            name = "\"\"";
-        }
         let rows: string[] = [];
         for (var row of this.rows) {
             let i = 0;
@@ -351,10 +343,10 @@ export class KeyboardModel {
         }
         let insets: string[] = [];
         if (this.buttonInsets !== "") {
-            insets.push("buttonInsets: " + this.buttonInsets);
+            insets.push("buttonInsets: " + JSON.stringify(this.buttonInsets));
         }
         return [
-            "name: " + name,
+            "name: " + JSON.stringify(this.name),
             ...rowHeight,
             ...insets,
             "rows:",
