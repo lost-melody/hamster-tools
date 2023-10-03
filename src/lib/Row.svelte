@@ -8,6 +8,7 @@
     export let keys: KeyModel[];
     export let rowHeight: number;
     export let destroyThis: () => void;
+    export let displaySwipeUp: boolean, displaySwipeDown: boolean;
 
     let add = () => {
         keys.push(new KeyModel());
@@ -58,6 +59,8 @@
         />
         {#each keys as key (key.id)}
             <Key
+                {displaySwipeUp}
+                {displaySwipeDown}
                 destroyThis={() => destroyKey(key.id)}
                 moveLeft={() => moveKeyLeft(key.id)}
                 moveRight={() => moveKeyRight(key.id)}

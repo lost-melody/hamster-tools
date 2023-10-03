@@ -212,12 +212,12 @@ export class SwipeModel {
     display: boolean;
     processByRIME: boolean;
 
-    constructor() {
+    constructor(dir: Direction, display: boolean) {
         this.id = Date.now();
-        this.direction = Direction.up;
+        this.direction = dir;
         this.action = new Action();
         this.label = "";
-        this.display = false;
+        this.display = display;
         this.processByRIME = true;
     }
 

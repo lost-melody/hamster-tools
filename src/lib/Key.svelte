@@ -11,6 +11,7 @@
 
     import {
         Action,
+        Direction,
         SwipeModel,
         KeyWidth,
         WidthType,
@@ -24,12 +25,17 @@
     export let label: string;
     export let swipes: SwipeModel[];
     export let rowHeight: number;
+    export let displaySwipeUp: boolean, displaySwipeDown: boolean;
     export let destroyThis: () => void;
     export let moveLeft: () => void;
     export let moveRight: () => void;
 
-    let add = () => {
-        swipes.push(new SwipeModel());
+    let add = (dir: Direction) => {
+        if (dir === Direction.up) {
+            swipes.push(new SwipeModel(dir, displaySwipeUp));
+        } else {
+            swipes.push(new SwipeModel(dir, displaySwipeDown));
+        }
         swipes = swipes;
     };
     let destroySwipe = (id: number) => {
@@ -95,7 +101,14 @@
                     destroyThis={() => destroySwipe(swipe.id)}
                 />
             {/each}
-            <Button color="green" on:click={add}>+</Button>
+            <Flex gap="sm">
+                <Button color="green" on:click={() => add(Direction.up)}
+                    >上滑</Button
+                >
+                <Button color="green" on:click={() => add(Direction.down)}
+                    >下滑</Button
+                >
+            </Flex>
         </Stack>
         <Flex gap="sm">
             <Button on:click={destroyThis} color="red">删除按鍵</Button>
