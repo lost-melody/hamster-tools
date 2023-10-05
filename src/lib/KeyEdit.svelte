@@ -7,6 +7,7 @@
         Stack,
         TextInput,
     } from "@svelteuidev/core";
+    import Icon from "@iconify/svelte";
 
     import {
         Action,
@@ -58,7 +59,7 @@
         {#if width.type !== WidthType.input && width.type !== WidthType.available}
             <NumberInput
                 bind:value={width.width}
-                override={{ width: "64px" }}
+                override={{ width: "96px" }}
                 required
                 label="寛度值"
                 placeholder="1"
@@ -80,19 +81,38 @@
             <SwipeEdit bind:swipe destroyThis={() => destroySwipe(swipe.id)} />
         {/each}
         <Flex gap="sm">
-            <Button color="green" on:click={() => add(Direction.up)}
-                >上滑</Button
-            >
-            <Button color="green" on:click={() => add(Direction.down)}
-                >下滑</Button
-            >
+            <Button color="green" on:click={() => add(Direction.up)}>
+                <Icon slot="leftIcon" width="20" icon="mdi:gesture-swipe-up" />
+                上滑
+            </Button>
+            <Button color="green" on:click={() => add(Direction.down)}>
+                <Icon
+                    slot="leftIcon"
+                    width="20"
+                    icon="mdi:gesture-swipe-down"
+                />
+                下滑
+            </Button>
         </Flex>
     </Stack>
     {#if !isTemplate}
         <Flex gap="sm">
-            <Button on:click={destroyThis} color="red">删除按鍵</Button>
-            <Button on:click={moveLeft}>左移</Button>
-            <Button on:click={moveRight}>右移</Button>
+            <Button on:click={destroyThis} color="red">
+                <Icon slot="leftIcon" width="20" icon="mdi:card-remove" />
+                删除按鍵
+            </Button>
+            <Button on:click={moveLeft}>
+                <Icon slot="leftIcon" width="20" icon="mdi:arrow-left-circle" />
+                左移
+            </Button>
+            <Button on:click={moveRight}>
+                <Icon
+                    slot="rightIcon"
+                    width="20"
+                    icon="mdi:arrow-right-circle"
+                />
+                右移
+            </Button>
         </Flex>
     {/if}
 </Stack>

@@ -1,5 +1,12 @@
 <script lang="ts">
-    import { Button, Flex, NumberInput, Paper } from "@svelteuidev/core";
+    import {
+        ActionIcon,
+        Button,
+        Flex,
+        NumberInput,
+        Paper,
+    } from "@svelteuidev/core";
+    import Icon from "@iconify/svelte";
 
     import { KeyModel } from "./Hamster";
 
@@ -43,16 +50,18 @@
 
 <Paper>
     <Flex gap="sm" override={{ height: _rowHeight }}>
-        <Button
+        <ActionIcon
             override={{ height: _rowHeight, width: "32px" }}
             on:click={destroyThis}
-            color="red">X</Button
+            color="red"
         >
+            <Icon width="100%" icon="mdi:table-row-remove" />
+        </ActionIcon>
         <NumberInput
             hideControls
             override={{
                 height: _rowHeight,
-                width: "48px",
+                width: "64px",
             }}
             bind:value={rowHeight}
             placeholder="行高"
@@ -72,10 +81,12 @@
                 {rowHeight}
             />
         {/each}
-        <Button
+        <ActionIcon
             override={{ height: _rowHeight, width: "32px" }}
             color="green"
-            on:click={add}>+</Button
+            on:click={add}
         >
+            <Icon width="100%" icon="mdi:plus-box" />
+        </ActionIcon>
     </Flex>
 </Paper>

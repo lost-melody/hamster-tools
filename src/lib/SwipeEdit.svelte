@@ -8,6 +8,8 @@
         Switch,
         TextInput,
     } from "@svelteuidev/core";
+    import Icon from "@iconify/svelte";
+
     import { Directions, SwipeModel } from "./Hamster";
     import ActionEdit from "./ActionEdit.svelte";
 
@@ -25,7 +27,10 @@
 <Paper>
     <Stack>
         <Flex gap="sm">
-            <Button on:click={destroyThis} color="red">删除</Button>
+            <Button on:click={destroyThis} color="red">
+                <Icon slot="leftIcon" width="20" icon="mdi:delete" />
+                删除
+            </Button>
             <Switch bind:checked={swipe.display} label="顯示" />
             <Switch bind:checked={swipe.processByRIME} label="經Rime處理" />
         </Flex>

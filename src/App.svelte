@@ -1,5 +1,6 @@
 <script lang="ts">
     import {
+        ActionIcon,
         Button,
         Collapse,
         Divider,
@@ -11,6 +12,7 @@
         Switch,
         Textarea,
     } from "@svelteuidev/core";
+    import Icon from "@iconify/svelte";
 
     import { KeyModel, KeyboardModel } from "./lib/Hamster";
 
@@ -37,11 +39,9 @@
             .concat(keyboards.slice(index + 1));
     };
 
-    let json_text: string;
     let yaml_text: string;
     let show_text: boolean;
     let gen = () => {
-        json_text = JSON.stringify(keyboards);
         let yaml: string[] = ["keyboards:"];
         for (var keyboard of keyboards) {
             let i = 0;
@@ -58,18 +58,6 @@
         yaml_text = yaml.join("\n");
         show_text = true;
     };
-    let parse = () => {
-        try {
-            // 試圖實現 json 數據導入
-            let data = JSON.parse(json_text);
-        } catch (e) {
-            if (e instanceof SyntaxError) {
-                console.error(e.message);
-            } else {
-                throw e;
-            }
-        }
-    };
 </script>
 
 <SvelteUIProvider
@@ -77,15 +65,28 @@
     themeObserver={dark_theme ? "dark" : "light"}
 >
     <Stack gap="sm">
-        <Switch
-            bind:checked={dark_theme}
-            size="lg"
-            label="主題模式"
-            onLabel="達客"
-            offLabel="明亮"
-        />
+        <Flex gap="sm">
+            <Switch
+                bind:checked={dark_theme}
+                size="lg"
+                label="主題模式"
+                onLabel="達客"
+                offLabel="明亮"
+            />
+            <ActionIcon
+                root="a"
+                size="lg"
+                external={true}
+                href="https://github.com/lost-melody/hamster-tools"
+            >
+                <Icon icon="mdi:github" color="black" width="100%" />
+            </ActionIcon>
+        </Flex>
         <Divider />
-        <Button on:click={() => (openKeyTemp = !openKeyTemp)}>按鍵模板</Button>
+        <Button on:click={() => (openKeyTemp = !openKeyTemp)}>
+            <Icon slot="leftIcon" width="20" icon="mdi:clipboard-text" />
+            按鍵默認值
+        </Button>
         <Collapse open={openKeyTemp}>
             <Paper>
                 <KeyEdit
@@ -117,8 +118,14 @@
             <Divider />
         {/each}
         <Flex gap="sm">
-            <Button color="green" on:click={add}>添加鍵盤</Button>
-            <Button on:click={gen}>生成配置</Button>
+            <Button color="green" on:click={add}>
+                <Icon slot="leftIcon" width="20" icon="mdi:keyboard" />
+                添加鍵盤
+            </Button>
+            <Button on:click={gen}>
+                <Icon slot="leftIcon" width="20" icon="mdi:file-document" />
+                生成配置
+            </Button>
         </Flex>
     </Stack>
     <Modal
@@ -128,12 +135,6 @@
         on:close={() => (show_text = false)}
         size="75%"
     >
-        <Textarea
-            style="font-family:monospace;font-size:16px"
-            bind:value={json_text}
-            on:change={parse}
-            label="配置JSON數據"
-        />
         <Textarea
             style="font-family:monospace;font-size:16px"
             rows={16}
