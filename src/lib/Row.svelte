@@ -5,13 +5,14 @@
 
     import Key from "./Key.svelte";
 
+    export let keyTemp: KeyModel;
     export let keys: KeyModel[];
     export let rowHeight: number;
     export let destroyThis: () => void;
     export let displaySwipeUp: boolean, displaySwipeDown: boolean;
 
     let add = () => {
-        keys.push(new KeyModel());
+        keys.push(keyTemp.clone());
         keys = keys;
     };
     let destroyKey = (id: number) => {

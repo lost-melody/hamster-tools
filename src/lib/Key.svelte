@@ -1,24 +1,8 @@
 <script lang="ts">
-    import {
-        Button,
-        Flex,
-        Modal,
-        NativeSelect,
-        NumberInput,
-        Stack,
-        TextInput,
-    } from "@svelteuidev/core";
+    import { Button, Modal } from "@svelteuidev/core";
 
-    import {
-        Action,
-        Direction,
-        SwipeModel,
-        KeyWidth,
-        WidthType,
-        WidthTypes,
-    } from "./Hamster";
-    import ActionEdit from "./ActionEdit.svelte";
-    import SwipeEdit from "./SwipeEdit.svelte";
+    import { Action, SwipeModel, KeyWidth } from "./Hamster";
+    import KeyEdit from "./KeyEdit.svelte";
 
     export let action: Action;
     export let width: KeyWidth;
@@ -29,21 +13,6 @@
     export let destroyThis: () => void;
     export let moveLeft: () => void;
     export let moveRight: () => void;
-
-    let add = (dir: Direction) => {
-        if (dir === Direction.up) {
-            swipes.push(new SwipeModel(dir, displaySwipeUp));
-        } else {
-            swipes.push(new SwipeModel(dir, displaySwipeDown));
-        }
-        swipes = swipes;
-    };
-    let destroySwipe = (id: number) => {
-        let index = swipes.findIndex((value) => {
-            return value.id === id;
-        });
-        swipes = swipes.slice(0, index).concat(swipes.slice(index + 1));
-    };
 
     let display: string;
     $: if (label !== "") {
@@ -70,50 +39,16 @@
     on:close={() => (editing = false)}
     opened={editing}
 >
-    <Stack>
-        <ActionEdit bind:action />
-        <Flex gap="sm">
-            <NativeSelect
-                data={WidthTypes}
-                bind:value={width.type}
-                label="鍵寛類型"
-            />
-            <NumberInput
-                disabled={width.type === WidthType.input ||
-                    width.type === WidthType.available}
-                bind:value={width.width}
-                required
-                label="寛度值"
-                placeholder="1"
-                precision={2}
-                min={0.01}
-                max={100}
-                step={0.05}
-            />
-        </Flex>
-        <Flex gap="sm">
-            <TextInput bind:value={label} label="標簽" placeholder={display} />
-        </Flex>
-        <Stack>
-            {#each swipes as swipe (swipe.id)}
-                <SwipeEdit
-                    bind:swipe
-                    destroyThis={() => destroySwipe(swipe.id)}
-                />
-            {/each}
-            <Flex gap="sm">
-                <Button color="green" on:click={() => add(Direction.up)}
-                    >上滑</Button
-                >
-                <Button color="green" on:click={() => add(Direction.down)}
-                    >下滑</Button
-                >
-            </Flex>
-        </Stack>
-        <Flex gap="sm">
-            <Button on:click={destroyThis} color="red">删除按鍵</Button>
-            <Button on:click={moveLeft}>左移</Button>
-            <Button on:click={moveRight}>右移</Button>
-        </Flex>
-    </Stack>
+    <KeyEdit
+        bind:action
+        bind:width
+        bind:label
+        {display}
+        bind:swipes
+        {displaySwipeUp}
+        {displaySwipeDown}
+        {destroyThis}
+        {moveLeft}
+        {moveRight}
+    />
 </Modal>

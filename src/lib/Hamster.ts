@@ -131,7 +131,7 @@ export class Action {
             case ActionType.space:
                 return "␣";
             case ActionType.keyboardType:
-                if (this.kbd == KeyboardType.custom) {
+                if (this.kbd === KeyboardType.custom) {
                     return this.text;
                 } else {
                     return this.kbd;
@@ -139,12 +139,21 @@ export class Action {
             case ActionType.shortCommand:
                 return this.cmd;
             case ActionType.none:
-                return this.type;
+                return "";
             case ActionType.nextKeyboard:
                 return "⌘";
             default:
                 return ActionType.none;
         }
+    }
+
+    clone(): Action {
+        let action = new Action();
+        action.type = this.type;
+        action.text = this.text;
+        action.kbd = this.kbd;
+        action.cmd = this.cmd;
+        return action;
     }
 
     render(): string {
@@ -189,6 +198,13 @@ export class KeyWidth {
         }
     }
 
+    clone(): KeyWidth {
+        let width = new KeyWidth();
+        width.type = this.type;
+        width.width = this.width;
+        return width;
+    }
+
     render(): string {
         switch (this.type) {
             case WidthType.input:
@@ -206,7 +222,7 @@ export class KeyWidth {
 
 export class SwipeModel {
     id: number;
-    direction: string;
+    direction: Direction;
     action: Action;
     label: string;
     display: boolean;
@@ -219,6 +235,14 @@ export class SwipeModel {
         this.label = "";
         this.display = display;
         this.processByRIME = true;
+    }
+
+    clone(): SwipeModel {
+        let swipe = new SwipeModel(this.direction, this.display);
+        swipe.action = this.action.clone();
+        swipe.label = this.label;
+        swipe.processByRIME = this.processByRIME;
+        return swipe;
     }
 
     render(): string[] {
@@ -245,6 +269,17 @@ export class KeyModel {
         this.width = new KeyWidth();
         this.label = "";
         this.swipe = [];
+    }
+
+    clone(): KeyModel {
+        let key = new KeyModel();
+        key.action = this.action.clone();
+        key.width = this.width.clone();
+        key.label = this.label;
+        for (var swipe of this.swipe) {
+            key.swipe.push(swipe.clone());
+        }
+        return key;
     }
 
     render(): string[] {

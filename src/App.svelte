@@ -1,22 +1,27 @@
-<!--
--->
-
 <script lang="ts">
     import {
         Button,
+        Collapse,
+        Divider,
         Flex,
         Modal,
+        Paper,
         Stack,
         SvelteUIProvider,
         Switch,
         Textarea,
     } from "@svelteuidev/core";
 
-    import { KeyboardModel } from "./lib/Hamster";
+    import { KeyModel, KeyboardModel } from "./lib/Hamster";
 
     import Keyboard from "./lib/Keyboard.svelte";
+    import KeyEdit from "./lib/KeyEdit.svelte";
 
     let dark_theme = false;
+
+    let keyTemp: KeyModel = new KeyModel();
+    let openKeyTemp: boolean;
+    let displaySwipeUp: boolean, displaySwipeDown: boolean;
 
     let keyboards: KeyboardModel[] = [];
     let add = () => {
@@ -79,14 +84,37 @@
             onLabel="達客"
             offLabel="明亮"
         />
+        <Divider />
+        <Button on:click={() => (openKeyTemp = !openKeyTemp)}>按鍵模板</Button>
+        <Collapse open={openKeyTemp}>
+            <Paper>
+                <KeyEdit
+                    isTemplate={true}
+                    bind:action={keyTemp.action}
+                    bind:width={keyTemp.width}
+                    bind:label={keyTemp.label}
+                    display={keyTemp.label !== ""
+                        ? keyTemp.label
+                        : keyTemp.action.display()}
+                    bind:swipes={keyTemp.swipe}
+                    {displaySwipeUp}
+                    {displaySwipeDown}
+                    destroyThis={() => {}}
+                    moveLeft={() => {}}
+                    moveRight={() => {}}
+                />
+            </Paper>
+        </Collapse>
+        <Divider />
         {#each keyboards as keyboard (keyboard.id)}
             <Keyboard
+                {keyTemp}
                 destroyThis={() => destroyKdb(keyboard.id)}
                 bind:name={keyboard.name}
                 bind:rows={keyboard.rows}
-                bind:rowHeight={keyboard.rowHeight}
                 bind:buttonInsets={keyboard.buttonInsets}
             />
+            <Divider />
         {/each}
         <Flex gap="sm">
             <Button color="green" on:click={add}>添加鍵盤</Button>
